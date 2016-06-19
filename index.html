@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bet Scraping</title>
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.0.0.min.js"   integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="   crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.js"></script>
@@ -23,8 +23,8 @@
 </style>
 </head>
 <body>
-    <div class="content">
-        <div id="matches">
+    <div class="container-fluid">
+        <div id="matches" class="row">
         
         </div>
     </div>
@@ -34,15 +34,15 @@
         var action = window.location.search.toLowerCase().indexOf("ezy") > -1
             ? "ezy"
             : "moeg";
-        if(window.location)
-        $.get("http://barabatuswinwm.cloudapp.net/api/" + action, function (data){
+        var ul = "https://barabatuswinwm.cloudapp.net/api/" + action";
+        $.get(url, function (data){
             _.forEach(data, function (match){
                 console.log(match);
-                var matchContainer = $("<div class='match'\>");
+                var matchContainer = $("<div class='col-xs-12 col-sm-6'\>");
                 var start = moment(match.MatchStart);
                 
                 matchContainer.append("<h3>" + match.HomeTeam + " - " + match.AwayTeam + "</h3")
-                matchContainer.append("<h3>" + start.format("YYYY-MM-DD HH:mm") + "</h3>")
+                matchContainer.append("<h4>" + start.format("YYYY-MM-DD HH:mm") + "</h4>")
                 
                 var list = $("<ul\>");
                 _.forEach(match.BettingResults, function (bet){
