@@ -3,60 +3,61 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barabtus</title>
-    <link rel="stylesheet" type="text/css" href="Resources/Stylesheets/Variables.css">
+    <title>Bet Scraping</title>
 
-
-    <link href="Resources/Stylesheets/normalize.css" rel="stylesheet" type="text/css" />
-    <link href="Resources/Stylesheets/bootstrap.css" rel="stylesheet" type="text/css" />
-    <link href="Resources/Stylesheets/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
-
-
+<script src="https://code.jquery.com/jquery-3.0.0.min.js"   integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="   crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.js"></script>
+<style>
+    .match{
+        width:40%;
+        float: left;
+    }
+    .match ul{
+        list-style: none;
+        padding-left:0px;
+    }
+    .match li{
+        margin:5px 0px;
+    }
+</style>
 </head>
 <body>
-    <div class="Content">
-        <div id="MenuBackLayer">
-            <img src="Resources/images/BackgroundCircle.png"/>
+    <div class="content">
+        <div id="matches">
+        
         </div>
-        <a href="#Home" id="Home"></a><a href="#Projects" id="Projects"></a><a href="#Whut" id="Whut"></a>
-        <a href="#About" id="About"></a>
-        
-        
-        <div id="MenuFrontLayer" >
-            <img src="Resources/images/ForegroundCircle.png" />
-        </div>    
-        <div id="BackgroundContent">
-            <div id="WhutContent">
-                <div class="Header">
-                    <div class="Ribbon">
-                        <div><span>Whut</span></div>
-                    </div>
-                </div>
-            </div>
-            <div id="AboutContent">
-                <div class="Header">
-                    <div class="Ribbon">
-                        <div><span>About</span></div>
-                    </div>
-                </div>
-            </div>
-            <div id="ProjectsContent">
-                <div class="Header">
-                    <div class="Ribbon">
-                        <div><span>Projects</span></div>
-                    </div>
-                </div>
-            </div>
-            <div id="HomeContent">
-                <div class="Header">
-                    <div class="Ribbon">
-                        <div><span>Home</span></div>
-                    </div>
-                </div>
-
-            </div>
-        </div>   
     </div>
+<script>
+(function (){
+    $(function () {
+        var action = window.location.search.toLowerCase().indexOf("ezy") > -1
+            ? "ezy"
+            : "moeg";
+        if(window.location)
+        $.get("http://barabatuswinwm.cloudapp.net/api/" + action, function (data){
+            _.forEach(data, function (match){
+                console.log(match);
+                var matchContainer = $("<div class='match'\>");
+                var start = moment(match.MatchStart);
+                
+                matchContainer.append("<h3>" + match.HomeTeam + " - " + match.AwayTeam + "</h3")
+                matchContainer.append("<h3>" + start.format("YYYY-MM-DD HH:mm") + "</h3>")
+                
+                var list = $("<ul\>");
+                _.forEach(match.BettingResults, function (bet){
+                    list.append("<li>" + bet.Name + ": " + bet.Bet +"</ul>");
+                })
+                matchContainer.append(list)
+                matchContainer.append("</div>")
+                
+                $("#matches").append(matchContainer)
 
+            })
+        });  
+    });
+})();
+    
+</script>
 </body>
 </html>
